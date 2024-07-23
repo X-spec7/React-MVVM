@@ -11,6 +11,14 @@ declare global {
     result: T | null;
   }
 
+  interface ProductDataSourceInterface {
+    create(productData: Product): Promise<ApiResponse<boolean>>;
+    deleteProduct(productId: number): Promise<ApiResponse<boolean>>;
+    update(id: number, newProductData: Partial<Product>): Promise<ApiResponse<boolean>>;
+    getAll(): Promise<ApiResponse<Product[]>>;
+    getOne(id: number): Promise<ApiResponse<Product>>;
+  }
+
 };
 
 export {};
