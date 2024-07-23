@@ -19,6 +19,14 @@ declare global {
     getOne(id: number): Promise<ApiResponse<Product>>;
   }
 
+  interface ProductRepositoryInterface {
+    createProduct(productData: Product): Promise<ApiResponse<boolean>>;
+    deleteProduct(productId: number): Promise<ApiResponse<boolean>>;
+    updateProduct(id: number, newProductData: Partial<Product>): Promise<ApiResponse<boolean>>;
+    getProducts(): Promise<ApiResponse<Product[]>>;
+    getProduct(id: number): Promise<ApiResponse<Product>>;
+  }
+
 };
 
 export {};
