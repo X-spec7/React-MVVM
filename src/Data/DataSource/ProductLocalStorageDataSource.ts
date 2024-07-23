@@ -36,7 +36,7 @@ export async function create(productData: Product): Promise<ApiResponse<boolean>
   return Promise.resolve({ error: null, result: true });
 }
 
-export async function deleteOne(id: number): Promise<ApiResponse<boolean>> {
+export async function deleteProduct(id: number): Promise<ApiResponse<boolean>> {
   let { result } = await getAll();
   let products = result || [];
   let deleteIndex = products.findIndex(item => item.id === id);
