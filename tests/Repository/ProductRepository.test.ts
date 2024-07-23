@@ -1,8 +1,8 @@
-import { ProductRepository } from '../../../src/Data/Repository/ProductRepository';
+import { ProductRepository } from '../../src/Data/Repository/ProductRepository';
 import 'regenerator-runtime/runtime';
 
 // Mock ProductDataSource
-const mockProductDataSource = {
+const mockProductDataSource: ProductDataSourceInterface = {
   create: jest.fn(),
   deleteProduct: jest.fn(),
   update: jest.fn(),
@@ -10,17 +10,17 @@ const mockProductDataSource = {
   getOne: jest.fn()
 };
 
-const inputData = { name: 'Example Product', price: 9.99 };
-const id = '123';
-const successResult = { result: 'success', error: null };
-const errorResult = (errorMsg) => ({ result: null, error: new Error(errorMsg) });
+const inputData: Partial<Product> = { name: 'Example Product', price: 9.99 };
+const id: number = 123;
+const successResult: ApiResponse<any> = { result: 'success', error: null };
+const errorResult = (errorMsg: string): ApiResponse<null> => ({ result: null, error: new Error(errorMsg) });
 
 describe('ProductRepository', () => {
-  let productRepository;
+  let productRepository: ProductRepositoryInterface;
 
   beforeEach(() => {
     // Create a new instance of ProductRepository with the mock ProductDataSource
-    productRepository = ProductRepository({ ProductDataSource: mockProductDataSource });
+    productRepository = ProductRepository({ProductDataSource: mockProductDataSource});
   });
 
   afterEach(() => {
@@ -28,7 +28,15 @@ describe('ProductRepository', () => {
     jest.clearAllMocks();
   });
 
-  const testCases = [
+  interface TestCase {
+    methodName: keyof ProductRepositoryInterface;
+    action: keyof typeof mockProductDataSource;
+    params: any[];
+    successResult: ApiResponse<any>;
+    errorMsg: string;
+  }
+
+  const testCases: TestCase[] = [
     {
       methodName: 'createProduct',
       action: 'create',
@@ -67,13 +75,13 @@ describe('ProductRepository', () => {
   ];
 
   testCases.forEach(({ methodName, action, params, successResult, errorMsg }) => {
-    describe(methodName, () => {
+    describe(methodName as string, () => {
       it(`should ${action} and return the result`, async () => {
         // Mock
-        mockProductDataSource[action].mockResolvedValue(successResult);
+        (mockProductDataSource[action] as jest.Mock).mockResolvedValue(successResult);
 
         // Act
-        const result = await productRepository[methodName](...params);
+        const result = await (productRepository[methodName] as any)(...params);
 
         // Assert
         expect(mockProductDataSource[action]).toHaveBeenCalledWith(...params);
@@ -83,10 +91,10 @@ describe('ProductRepository', () => {
       it(`should handle errors during ${action} and return the error`, async () => {
         // Mock
         const expectedResult = errorResult(errorMsg);
-        mockProductDataSource[action].mockResolvedValue(expectedResult);
+        (mockProductDataSource[action] as jest.Mock).mockResolvedValue(expectedResult);
 
         // Act
-        const result = await productRepository[methodName](...params);
+        const result = await (productRepository[methodName] as any)(...params);
 
         // Assert
         expect(mockProductDataSource[action]).toHaveBeenCalledWith(...params);
