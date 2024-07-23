@@ -5,13 +5,13 @@ interface UseCase<T> {
 }
 
 interface ProductDetailViewModelProps {
-  GetProductUseCase: UseCase<Product>;
+  GetProductByIdUseCase: UseCase<Product>;
   UpdateProductUseCase: UseCase<boolean>;
   DeleteProductUseCase: UseCase<boolean>;
 }
 
 const ProductDetailViewModel = ({
-  GetProductUseCase,
+  GetProductByIdUseCase,
   UpdateProductUseCase,
   DeleteProductUseCase,
 }: ProductDetailViewModelProps) => {
@@ -23,7 +23,7 @@ const ProductDetailViewModel = ({
   });
 
   const getProduct = async (id: number) => {
-    const { result, error } = await GetProductUseCase.execute(id);
+    const { result, error } = await GetProductByIdUseCase.execute(id);
     setError(error ? error.message : "");
     if (result) {
       setProductValues(result);
