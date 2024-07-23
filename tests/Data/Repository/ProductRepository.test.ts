@@ -1,4 +1,4 @@
-import { ProductRepository } from '../../src/Data/Repository/ProductRepository';
+import { ProductRepository } from '../../../src/Data/Repository/ProductRepository';
 import 'regenerator-runtime/runtime';
 
 // Mock ProductDataSource
