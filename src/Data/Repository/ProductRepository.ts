@@ -1,4 +1,4 @@
-export function ProductRepository({ ProductDataSource }: { ProductDataSource : ProductDataSourceInterface }) {
+export function ProductRepository({ ProductDataSource }: { ProductDataSource : ProductDataSourceInterface }): ProductRepositoryInterface {
   return {
     async createProduct(productData: Product): Promise<ApiResponse<boolean>> {
       const { result, error } = await ProductDataSource.create(productData);
